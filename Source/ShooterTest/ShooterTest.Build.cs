@@ -9,5 +9,7 @@ public class ShooterTest : ModuleRules
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
 		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "HeadMountedDisplay" });
+
+		PublicIncludePaths.AddRange(new string[] { "ShooterTest/Public/Weapon","ShooterTest/Public/UI"});
 	}
 }

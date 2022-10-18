@@ -6,6 +6,8 @@
 #include "GameFramework/Character.h"
 #include "ShooterTestCharacter.generated.h"
 
+class ASTWeaponBase;
+
 UCLASS(config=Game)
 class AShooterTestCharacter : public ACharacter
 {
@@ -28,6 +30,9 @@ public:
 	/** Base look up/down rate, in deg/sec. Other scaling may affect final rate. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
 	float BaseLookUpRate;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+		TSubclassOf<ASTWeaponBase>WeaponClass;
 
 protected:
 
@@ -63,10 +68,15 @@ protected:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	// End of APawn interface
 
+	virtual void BeginPlay() override;
+
 public:
 	/** Returns CameraBoom subobject **/
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
+
+private:
+	void SpawnWeapon();
 };
 

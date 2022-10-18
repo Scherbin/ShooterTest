@@ -8,6 +8,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Weapon/STWeaponBase.h"
 
 //////////////////////////////////////////////////////////////////////////
 // AShooterTestCharacter
@@ -76,6 +77,13 @@ void AShooterTestCharacter::SetupPlayerInputComponent(class UInputComponent* Pla
 	PlayerInputComponent->BindAction("ResetVR", IE_Pressed, this, &AShooterTestCharacter::OnResetVR);
 }
 
+void AShooterTestCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+
+	SpawnWeapon();
+}
+
 
 void AShooterTestCharacter::OnResetVR()
 {
@@ -137,4 +145,17 @@ void AShooterTestCharacter::MoveRight(float Value)
 		// add movement in that direction
 		AddMovementInput(Direction, Value);
 	}
+}
+
+void  AShooterTestCharacter::SpawnWeapon()
+{
+	if (!GetWorld()) return;
+
+	const auto Weapon = GetWorld()->SpawnActor<ASTWeaponBase>(WeaponClass);
+	if (Weapon)
+	{
+		FAttachmentTransformRules AttachmentRules(EAttachmentRule::SnapToTarget, false);
+		Weapon->AttachToComponent(GetMesh(), AttachmentRules, "WeaponSocket");
+	}
+
 }
