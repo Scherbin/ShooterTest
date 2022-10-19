@@ -8,7 +8,8 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
-#include "Weapon/STWeaponBase.h"
+#include "Components/STWeaponComponent.h"
+
 
 //////////////////////////////////////////////////////////////////////////
 // AShooterTestCharacter
@@ -44,8 +45,9 @@ AShooterTestCharacter::AShooterTestCharacter()
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
 	FollowCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 
-	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
-	// are set in the derived blueprint asset named MyCharacter (to avoid direct content references in C++)
+	
+	WeaponComponent = CreateDefaultSubobject<USTWeaponComponent>("WeaponComponent");
+
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -55,12 +57,18 @@ void AShooterTestCharacter::SetupPlayerInputComponent(class UInputComponent* Pla
 {
 	// Set up gameplay key bindings
 	check(PlayerInputComponent);
+	check(WeaponComponent);
+
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
+	PlayerInputComponent->BindAction("Fire", IE_Pressed, WeaponComponent, &USTWeaponComponent::StartFire);
+	PlayerInputComponent->BindAction("Fire", IE_Released, WeaponComponent, &USTWeaponComponent::StopFire);
+
 
 	PlayerInputComponent->BindAxis("MoveForward", this, &AShooterTestCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &AShooterTestCharacter::MoveRight);
 
+	
 	// We have 2 versions of the rotation bindings to handle different kinds of devices differently
 	// "turn" handles devices that provide an absolute delta, such as a mouse.
 	// "turnrate" is for devices that we choose to treat as a rate of change, such as an analog joystick
@@ -81,7 +89,7 @@ void AShooterTestCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	SpawnWeapon();
+	
 }
 
 
@@ -147,15 +155,3 @@ void AShooterTestCharacter::MoveRight(float Value)
 	}
 }
 
-void  AShooterTestCharacter::SpawnWeapon()
-{
-	if (!GetWorld()) return;
-
-	const auto Weapon = GetWorld()->SpawnActor<ASTWeaponBase>(WeaponClass);
-	if (Weapon)
-	{
-		FAttachmentTransformRules AttachmentRules(EAttachmentRule::SnapToTarget, false);
-		Weapon->AttachToComponent(GetMesh(), AttachmentRules, "WeaponSocket");
-	}
-
-}

@@ -6,7 +6,7 @@
 #include "GameFramework/Character.h"
 #include "ShooterTestCharacter.generated.h"
 
-class ASTWeaponBase;
+class USTWeaponComponent;
 
 UCLASS(config=Game)
 class AShooterTestCharacter : public ACharacter
@@ -31,8 +31,10 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
 	float BaseLookUpRate;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
-		TSubclassOf<ASTWeaponBase>WeaponClass;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
+	USTWeaponComponent* WeaponComponent;
+
+	
 
 protected:
 
@@ -76,7 +78,6 @@ public:
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 
-private:
-	void SpawnWeapon();
+
 };
 

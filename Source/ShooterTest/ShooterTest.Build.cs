@@ -10,6 +10,11 @@ public class ShooterTest : ModuleRules
 
 		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "HeadMountedDisplay" });
 
-		PublicIncludePaths.AddRange(new string[] { "ShooterTest/Public/Weapon","ShooterTest/Public/UI"});
+		PublicIncludePaths.AddRange(new string[] 
+		{ 
+			"ShooterTest/Public/Weapon",
+			"ShooterTest/Public/UI",
+			"ShooterTest/Public/Components"
+		});
 	}
 }
