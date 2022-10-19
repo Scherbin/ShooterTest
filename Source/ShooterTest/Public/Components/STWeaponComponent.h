@@ -19,7 +19,7 @@ public:
 
 	void StartFire();
 	void StopFire();
-
+	
 protected:
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
@@ -39,4 +39,5 @@ private:
 	ASTWeaponBase* CurrentWeapon = nullptr;
 
 	void SpawnWeapon();
+
 };

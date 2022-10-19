@@ -42,7 +42,7 @@ void USTWeaponComponent::StopFire()
 
 }
 
-void   USTWeaponComponent::SpawnWeapon()
+void USTWeaponComponent::SpawnWeapon()
 {
 	if (!GetWorld()) return;
 
@@ -59,3 +59,4 @@ void   USTWeaponComponent::SpawnWeapon()
 	}
 
 }
+

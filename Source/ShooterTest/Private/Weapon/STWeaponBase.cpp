@@ -20,6 +20,8 @@ void ASTWeaponBase::BeginPlay()
 	Super::BeginPlay();
 
 	check(WeaponMesh);
+
+	CurrentAmmo = DefaultAmmo;
 }
 
 void ASTWeaponBase::MakeShot()
@@ -72,19 +74,54 @@ void ASTWeaponBase::MakeHit(FHitResult& HitResult, const FVector& TraceStart, co
 	GetWorld()->LineTraceSingleByChannel(HitResult, TraceStart, TraceEnd, ECollisionChannel::ECC_Visibility);
 }
 
-void ASTWeaponBase::MakeDamage(const FHitResult& HitResult)
-{
-	const auto DamagedActor = HitResult.GetActor();
-	if (!DamagedActor) return;
-
-	DamagedActor->TakeDamage(DamageAmount, FDamageEvent(), GetPlayerController(), this);
-}
-
 void ASTWeaponBase::StartFire()
 {
 	
 }
+
 void ASTWeaponBase::StopFire()
 {
 	
+}
+
+void ASTWeaponBase::DecreaseAmmo()
+{
+	if (CurrentAmmo.Bullets == 0)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Clips is Empty"));
+		return;
+	}
+
+	CurrentAmmo.Bullets--;
+
+}
+
+bool ASTWeaponBase::IsAmmoEmpty() const
+{
+	return !CurrentAmmo.Infinite && CurrentAmmo.Clips && IsClipEmpty();
+}
+
+bool ASTWeaponBase::IsClipEmpty() const
+{
+	return CurrentAmmo.Bullets == 0;
+}
+
+void ASTWeaponBase::ChangeClip()
+{
+	if (!CurrentAmmo.Infinite)
+	{
+
+		if (CurrentAmmo.Clips == 0)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("No more clips"));
+			return;
+		}
+		CurrentAmmo.Clips--;
+	}
+	CurrentAmmo.Bullets = DefaultAmmo.Bullets;
+}
+
+bool ASTWeaponBase::CanReload()const
+{
+	return CurrentAmmo.Bullets < DefaultAmmo.Bullets&& CurrentAmmo.Clips > 0;
 }

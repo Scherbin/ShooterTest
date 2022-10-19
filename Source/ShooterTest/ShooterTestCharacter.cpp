@@ -63,6 +63,7 @@ void AShooterTestCharacter::SetupPlayerInputComponent(class UInputComponent* Pla
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, WeaponComponent, &USTWeaponComponent::StartFire);
 	PlayerInputComponent->BindAction("Fire", IE_Released, WeaponComponent, &USTWeaponComponent::StopFire);
+	//PlayerInputComponent->BindAction("Reload", IE_Pressed, ASTWeaponBase, &ASTWeaponBase::ChangeClip);
 
 
 	PlayerInputComponent->BindAxis("MoveForward", this, &AShooterTestCharacter::MoveForward);

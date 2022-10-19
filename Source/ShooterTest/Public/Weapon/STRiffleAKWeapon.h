@@ -17,7 +17,7 @@ public:
 	virtual void StopFire() override;
 
 protected:
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	float TimeBeetwenShots = 0.1f;
 
 	virtual void MakeShot();
