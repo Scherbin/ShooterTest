@@ -7,12 +7,14 @@
 #include "GameFramework/Controller.h"
 
 
+
 ASTWeaponBase::ASTWeaponBase()
 {
 	PrimaryActorTick.bCanEverTick = false;
 
 	WeaponMesh = CreateDefaultSubobject<USkeletalMeshComponent>("WeaponMesh");
 	SetRootComponent(WeaponMesh);
+	CurrentAmmo = DefaultAmmo;
 }
 
 void ASTWeaponBase::BeginPlay()
@@ -21,7 +23,7 @@ void ASTWeaponBase::BeginPlay()
 
 	check(WeaponMesh);
 
-	CurrentAmmo = DefaultAmmo;
+	
 }
 
 void ASTWeaponBase::MakeShot()
@@ -108,6 +110,8 @@ bool ASTWeaponBase::IsClipEmpty() const
 
 void ASTWeaponBase::ChangeClip()
 {
+	UE_LOG(LogTemp, Error, TEXT("ChangeClip %i"), CurrentAmmo.Bullets);
+
 	if (!CurrentAmmo.Infinite)
 	{
 
@@ -121,7 +125,4 @@ void ASTWeaponBase::ChangeClip()
 	CurrentAmmo.Bullets = DefaultAmmo.Bullets;
 }
 
-bool ASTWeaponBase::CanReload()const
-{
-	return CurrentAmmo.Bullets < DefaultAmmo.Bullets&& CurrentAmmo.Clips > 0;
-}
+

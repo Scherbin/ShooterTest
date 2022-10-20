@@ -9,7 +9,8 @@
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Components/STWeaponComponent.h"
-
+#include "Weapon/STWeaponBase.h"
+#include "STRiffleAKWeapon.h"
 
 //////////////////////////////////////////////////////////////////////////
 // AShooterTestCharacter
@@ -63,7 +64,7 @@ void AShooterTestCharacter::SetupPlayerInputComponent(class UInputComponent* Pla
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, WeaponComponent, &USTWeaponComponent::StartFire);
 	PlayerInputComponent->BindAction("Fire", IE_Released, WeaponComponent, &USTWeaponComponent::StopFire);
-	//PlayerInputComponent->BindAction("Reload", IE_Pressed, ASTWeaponBase, &ASTWeaponBase::ChangeClip);
+	PlayerInputComponent->BindAction("Reload", IE_Pressed,this, &AShooterTestCharacter::OnChangeClip);
 
 
 	PlayerInputComponent->BindAxis("MoveForward", this, &AShooterTestCharacter::MoveForward);
@@ -89,8 +90,6 @@ void AShooterTestCharacter::SetupPlayerInputComponent(class UInputComponent* Pla
 void AShooterTestCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-
-	
 }
 
 
@@ -155,4 +154,10 @@ void AShooterTestCharacter::MoveRight(float Value)
 		AddMovementInput(Direction, Value);
 	}
 }
-
+void AShooterTestCharacter:: OnChangeClip()
+{
+	
+	const auto pClass = WeaponComponent->WeaponClass->GetDefaultObject<ASTWeaponBase>();
+	pClass->ChangeClip();
+	
+}

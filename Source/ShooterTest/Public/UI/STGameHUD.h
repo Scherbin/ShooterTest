@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/HUD.h"
+#include "STWeaponBase.h"
 #include "STGameHUD.generated.h"
 
 
@@ -15,9 +16,10 @@ class SHOOTERTEST_API ASTGameHUD : public AHUD
 public:
 	virtual void DrawHUD() override;
 
+	
 protected:
 
 private:
-	void DrawCrossHair();
+	//void DrawCrossHair();
 
 };

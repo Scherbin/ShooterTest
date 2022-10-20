@@ -6,8 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "STWeaponBase.generated.h"
 
-
 class USkeletalMeshComponent;
+
 
 USTRUCT(BlueprintType)
 struct FAmmoData
@@ -37,8 +37,9 @@ public:
 	virtual void StopFire();
 
 	void ChangeClip();
-	bool CanReload()const;
 
+	FAmmoData GetAmmoData() const { return CurrentAmmo; }
+	
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
 	USkeletalMeshComponent* WeaponMesh;
@@ -55,6 +56,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
 	FAmmoData DefaultAmmo{15, 10, false};
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	FAmmoData CurrentAmmo;
+
 	virtual void BeginPlay() override;
 
 	virtual void MakeShot();
@@ -69,8 +73,8 @@ protected:
 	void DecreaseAmmo();
 	bool IsAmmoEmpty() const;
 	bool IsClipEmpty() const;
+
+
+
 	
-	
-private:
-	FAmmoData CurrentAmmo;
 };

@@ -8,6 +8,7 @@
 
 void ASTRiffleAKWeapon::StartFire()
 {
+	
 	MakeShot();
 	GetWorldTimerManager().SetTimer(ShotTimerHandle, this, &ASTRiffleAKWeapon::MakeShot, TimeBeetwenShots, true);
 }

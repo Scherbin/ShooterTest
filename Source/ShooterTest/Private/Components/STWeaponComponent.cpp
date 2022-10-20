@@ -11,7 +11,6 @@ USTWeaponComponent::USTWeaponComponent()
 	
 	PrimaryComponentTick.bCanEverTick = false;
 
-	
 }
 
 void USTWeaponComponent::BeginPlay()
@@ -41,6 +40,17 @@ void USTWeaponComponent::StopFire()
 	CurrentWeapon->StopFire();
 
 }
+
+bool USTWeaponComponent::GetWeaponAmmoData(FAmmoData& AmmoData) const
+{
+	if (CurrentWeapon)
+	{
+		AmmoData = CurrentWeapon->GetAmmoData();
+		return true;
+	}
+	return false;
+}
+
 
 void USTWeaponComponent::SpawnWeapon()
 {
